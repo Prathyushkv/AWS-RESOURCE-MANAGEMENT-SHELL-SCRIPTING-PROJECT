@@ -1,0 +1,22 @@
+#########################################
+#Author: Prathyush K V
+#Date: 01-07-24
+#Version: v1
+#This script will report the AWS resource usage
+##########################################
+
+#List all the s3 buckets
+echo "Print all the s3 buckets"
+aws s3 ls > resource_report
+
+#List EC2 Instances
+echo "Print all the ec2 instances"
+aws ec2 describe-instances | jq '.Reservations[].Instances[].InstanceId' >> resource_report
+
+#List all the IAM Users
+echo "Print all the IAM Users"
+aws iam list-users | jq '.Users[].UserName' >> resource_report
+
+#List the lambda functions
+echo "Print all the lambda functions"
+aws lambda list-functions --function-version ALL | jq '.Functions[].FunctionName' >> resource_report
